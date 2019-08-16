@@ -5,7 +5,7 @@ corFile <- args[2]
 newFile <- args[3]
 outFile1 <- args[4]
 outFile2 <- args[5]
-#setwd("/srv/netscratch/dep_coupland/grp_schneeberger/projects/AMPRILdenovo/genefamily/pangenome")
+
 pdf(outFile1)
 
 #par(mfrow=c(2,1))
