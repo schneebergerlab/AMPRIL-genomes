@@ -3,8 +3,7 @@
 
 '''
 Created on Aug 02, 2018
-
-extract the linked-reads
+build pangenome based on protein-coding genes orthologs resulting from orthoFinder
 @author: jiao
 '''
 import sys
