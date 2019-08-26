@@ -31,3 +31,12 @@ perl ../../scripts/calculate.syn.diversity.pl ./Col.syn.all.coords.txt2 ../../re
 
 # caculate synteny diversity in a sliding window
 for k in {1..5}; do   perl ../../scripts/calculate.syn.diversity.window.pl ./splitChr/Chr$k.syn.div.pos.txt 5000 1000 splitChr/Chr$k.syn.div.win50kb.step5kb.txt & done &
+
+## find HR (HDR)
+awk '{if ($5>0.5)print}' syn.div.win5kb.step1kb.txt |bedtools merge -i - -d 2002 |bedtools intersect -a - -b ../../../tair10/centromere_Giraut2011.bed -wao |awk '{if ($7==0) print $0"\tA";else print $0"\tC"}' |cut -f 1-3,8  >syn.div.win5kb.step1kb.HDR.bed
+
+## gene arrangment in the HR(HDR)
+ nohup perl ../../scripts/syndiv/HDR.gene.scheme.2.pl ../00_synDiv/Col.syn.all.coords.txt2 ./HDR.clu.bed ../../01_syri/pairwiseAssV2/ ../../../genefamily/AMPRIL/ver3/AMPRIL.ortholog.groups.csv ../../../genefamily/AMPRIL/ver3/geneBed2/ ../../../genefamily/AMPRIL/ver3/Rgenes/ann/ 50000 ./cluWin50kb2 > np.log2 &
+
+##gene arrangment in the HR(HDR)
+nohup perl ../../../scripts/Rgenes/R.gene.cluster.wga.ortho.scheme.pl ../../../../wga/07_synDiversity/00_synDiv/Col.syn.all.coords.txt2 ./R.gene.cluster.bed ../../../../wga/01_syri/pairwiseAssV2/ ../AMPRIL.ortholog.groups.csv ../geneBed2/ ./ann/ 20000 ./tmp >tmp.log&
