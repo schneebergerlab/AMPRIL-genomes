@@ -86,7 +86,7 @@ ln -s  ../../../../genefamily/blastpAraport11/Sha/orthomcl/groups.txt ./
 awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../../../../assembly/ShaNew/evaluation/Araport11blastn/araport11.gene.besthit.out >Araport11.gene.blastn.besthit.out
 awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit.out >query.gene.blastn.besthit.out
 
-##input files: 
+input files: 
 	Araport11 and accession protein region bed files and sequences files.
 		grep gene  ../../repeat/TErelated/annotation.genes.gff|cut -f 1,4,5,9 |sed 's/TU/model/g' >query.prot.gene.bed   
 	Blastp result of accession proteins against Araport11 proteins
@@ -97,7 +97,7 @@ awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit
 	Blastn result of accession gene sequences against Col-0 genome sequences. (Blastn result 2)
 		awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' query.prot.besthit.out >query.prot.besthit.out2
 
-##output files:
+output files:
 	potential.mis-merged.gene.txt (function: findMisMer, based on the result of blastp between Col and the Accession)
 	potential.mis-spliting.gene.txt (function: findMisSplit. based on the result of blastp between Col and the Accession)	
 	potential.query.un-assembled.gene.txt (findMissingMisann. based on the result of Col gene blastn against the accession's assembly)
