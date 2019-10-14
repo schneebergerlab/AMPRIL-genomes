@@ -16,19 +16,17 @@ All scripts can be run directly.
 # Usage
 
 ## workflow for protein-coding gene annotation 
-working directory stucture (e.g: Cvi genome:
-/AMPRIL/annotation/Cvi
-/AMPRIL/annotation/Cvi/reference
-/AMPRIL/annotation/Cvi/abinitio
-/AMPRIL/annotation/Cvi/protein
-/AMPRIL/annotation/Cvi/RNAseq
-/AMPRIL/annotation/Cvi/EVM_PASA
-/AMPRIL/annotation/Cvi/evaluation
-/AMPRIL/annotation/Cvi/version
-/AMPRIL/annotation/scripts
-
-/AMPRIL/genefamily/blastpAraport11/Cvi
-
+	working directory stucture (e.g: Cvi genome:
+	/AMPRIL/annotation/Cvi
+	/AMPRIL/annotation/Cvi/reference
+	/AMPRIL/annotation/Cvi/abinitio
+	/AMPRIL/annotation/Cvi/protein
+	/AMPRIL/annotation/Cvi/RNAseq
+	/AMPRIL/annotation/Cvi/EVM_PASA
+	/AMPRIL/annotation/Cvi/evaluation
+	/AMPRIL/annotation/Cvi/version
+	/AMPRIL/annotation/scripts
+	/AMPRIL/genefamily/blastpAraport11/Cvi
 
 ### step 1: run pipeline for protein-coding gene annotation
 	python ../scripts/evm.pasa.integrate.pipeline.py -f ./annotation.config
@@ -132,12 +130,12 @@ working directory stucture (e.g: Cvi genome:
 		wrong exon-intron structure (blastn)
 		false protein-coding genes (not annotated in Araport 11 but actually they were assembled in the Col-0 genome) (Blastn result 2)
 		missing genes (not annotated in accession, but actually they were assembled)  (Blastn result 1)
-
-nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt -o ./run2 -n  Col.prot.besthit.out2 -c query.prot.besthit.out2 -p blastp.result -s Col.prot.gene.bed -q query.prot.gene.bed -x Col.prot.fasta -y query.prot.fasta -a Col.gene.LoF.txt -b query.gene.LoF.txt -r ../../RNAseq/hisat2/rnaseq.4evm.gff >np.run2&
+		
+		nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt -o ./run2 -n  Col.prot.besthit.out2 -c query.prot.besthit.out2 -p blastp.result -s Col.prot.gene.bed -q query.prot.gene.bed -x Col.prot.fasta -y query.prot.fasta -a Col.gene.LoF.txt -b query.gene.LoF.txt -r ../../RNAseq/hisat2/rnaseq.4evm.gff >np.run2&
 
 ### step 6: update    
 #### 1) run scipio to align the protein sequences from Araport11 annoation
-  python ../../../scripts/run.scipio.py -i ../../../data/protein/Araport11-split -o ./  -r ./reference/chr.all.v2.0.fasta >run.log &
+	python ../../../scripts/run.scipio.py -i ../../../data/protein/Araport11-split -o ./  -r ./reference/chr.all.v2.0.fasta >run.log &
   
 
 #### prepare the files
@@ -187,89 +185,78 @@ nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt
 		2) prepare the other annotation result from Augustus-evidence-based method, SNAP ab initio and GlimmerHMM ab initio result
 	 		cat ../../abinitio/augustus/augustus.hint.chunk.*.gff |egrep -v '#|intron|transcription|codon' > ../../augustus/augustus.ann.gff
 		3) update 
-  
-   nohup python -u ../../../scripts/update.misann.genes.py -u genes.to.be.updated.txt -g annotation.genes.gff -o ./run2 -s scipio.gff -x Col.gene.LoF.txt -y query.gene.LoF.txt -c ChrCM.txt -a augustus.ann.gff -n SNAP.4evm.gff -l glimmerhmm.4evm.gff -b ./Col.gene.blastn.besthit.bed  -f ../../reference/chr.all.v2.0.fasta -p Col.prot.fasta -i ./Col.prot.gene.bed >update.run2.log  &
-  
-  python ../../scripts/annotation.gene.ID.update.py -i update2/updated.highConf.gff -n ../version/Cvi.genes.annotation.v2.0.gff -o ../version -v v2.5 -a Cvi -g ../reference/chr.all.v2.0.fasta &
+ 	nohup python -u ../../../scripts/update.misann.genes.py -u genes.to.be.updated.txt -g annotation.genes.gff -o ./run2 -s scipio.gff -x Col.gene.LoF.txt -y query.gene.LoF.txt -c ChrCM.txt -a augustus.ann.gff -n SNAP.4evm.gff -l glimmerhmm.4evm.gff -b ./Col.gene.blastn.besthit.bed  -f ../../reference/chr.all.v2.0.fasta -p Col.prot.fasta -i ./Col.prot.gene.bed >update.run2.log  &
+	python ../../scripts/annotation.gene.ID.update.py -i update2/updated.highConf.gff -n ../version/Cvi.genes.annotation.v2.0.gff -o ../version -v v2.5 -a Cvi -g ../reference/chr.all.v2.0.fasta &
 
  
 # Workflow for pan-genome analysis
+	pangenome can be built based on the whole genome sequence alignment or protein-coding genes ortholog clustering
+	
+	## Pan-genome: genome sequence alignment
+		do all pairwise whole genome comparisons using MUMmer
+		prepare all chromosome length information in a file for each genome; e.g:
+			Chr1    30401407
+			Chr2    19417579
+			Chr3    23034411
+			Chr4    18785460
+			Chr5    26733864
+	python -u wga.pangenome.py -w ./pairwiseAssV2 -o ./ -g ../chrBed_v2/ &
 
-pangenome can be built based on the whole genome sequence alignment or protein-coding genes ortholog clustering
-
-## Pan-genome: genome sequence alignment
-
-do all pairwise whole genome comparisons using MUMmer
-
-prepare all chromosome length information in a file for each genome; e.g:
-Chr1    30401407
-Chr2    19417579
-Chr3    23034411
-Chr4    18785460
-Chr5    26733864
-
-python -u wga.pangenome.py -w ./pairwiseAssV2 -o ./ -g ../chrBed_v2/ &
-
-## Pan-genome: protein-coding genes ortholog clustering
-python pangenome.build.py -g AMPRIL.Alyrata.ortholog.groups.csv -o ./
+	## Pan-genome: protein-coding genes ortholog clustering
+		python pangenome.build.py -g AMPRIL.Alyrata.ortholog.groups.csv -o ./
 
 
 # Workflow for Structural variations calling for each assembled genome.
-All assemblies were aligned to the reference sequence (TAIR10) using nucmer from the MUMmer4 toolbox with parameter setting “-max -l 40 -g 90 -b 100 -c 200”. The resulting alignments were further filtered for alignment length (>100) and identity (>90). Structural rearrangements and local variations were identified using SyRI (https://github.com/schneebergerlab/syri).
+	All assemblies were aligned to the reference sequence (TAIR10) using nucmer from the MUMmer4 toolbox with parameter setting “-max -l 40 -g 90 -b 100 -c 200”. The resulting alignments were further filtered for alignment length (>100) and identity (>90). Structural rearrangements and local variations were identified using SyRI (https://github.com/schneebergerlab/syri).
 
-For details of the file format, please check https://schneebergerlab.github.io/syri/fileformat.html
+	For details of the file format, please check https://schneebergerlab.github.io/syri/fileformat.html
 
-Example of commands used:
-  nucmer --maxmatch  -l 40 -g 90 -c 100 -b 200 -t 20 Col.fasta An-1.fasta
-  delta-filter -m -i 90 -l 100 out.delta > out_m_i90_l100.delta
-  show-coords -THrd out_m_i90_l100.delta > out_m_i90_l100.coords
-  syri -c out.chrom.coords -d out_m_i90_l100.delta -r Col.fasta -q An-1.fasta --nc 5 --all -k
-
+	Example of commands used:
+  	  nucmer --maxmatch  -l 40 -g 90 -c 100 -b 200 -t 20 Col.fasta An-1.fasta
+  	  delta-filter -m -i 90 -l 100 out.delta > out_m_i90_l100.delta
+  	  show-coords -THrd out_m_i90_l100.delta > out_m_i90_l100.coords
+      syri -c out.chrom.coords -d out_m_i90_l100.delta -r Col.fasta -q An-1.fasta --nc 5 --all -k
 
 # Workflow for the analysis of synteny diversity
+	## step 1:
+	Before caculate synteny diversity, please run all pairwise whole genome comparison using MUMmer and run SyRi to identify the syntenic and rearranged regions for each comparison.
+	Let's assume all the alignments in a folder like below:
+		/xxx/pairwiseWGA
+		/xxx/pairwiseWGA/An-1
+		/xxx/pairwiseWGA/An-1/C24
+		/xxx/pairwiseWGA/An-1/Cvi
+		...
+		/xxx/pairwiseWGA/An-1/Sha
+		...
+		...
+		...
+		/xxx/pairwiseWGA/Sha
+		/xxx/pairwiseWGA/Sha/An-1
+		/xxx/pairwiseWGA/Sha/C24
+		...
+	## step 2: get coordinates of syntenic regions in all genomes
+  		bedtools multiinter -i ../../results/pairwiseAssV2/Col/*/*.wga.syn.block.txt  -names An-1 C24 Cvi Eri Kyo Ler Sha >Col.syn.txt
+  		for k in {1..5};do show-aligns -r out_m_i90_l100.delta Chr$k chr$k >out_m_i90_l100.chr$k.aligns ;done &
+  		for k in {An-1,C24,Cvi,Eri,Kyo,Ler,Sha};do cat $k/out_m_i90_l100.chr*.aligns >$k/$k.aligns ;done &
+  		bedtools multiinter -i ../../results/pairwiseAssV2/Col/*/*.wga.syn.block.txt  -names An-1 C24 Cvi Eri Kyo Ler Sha >Col.syn.txt
+  		perl ../../scripts/get.all.syn.coord.pl ./Col.syn.all.txt ../../results/pairwiseAssV2/Col/ ./Col.syn.all.coords.txt &
+		
+	## step 3: caculate synteny diversity for every postion of the genome
+		perl ../../scripts/calculate.syn.diversity.pl ./Col.syn.all.coords.txt2 ../../results/pairwiseAssV2/ ../../chrBed_v2 ./syn.diversity.position.Col.txt 
 
-Before caculate synteny diversity, please run all pairwise whole genome comparison using MUMmer and run SyRi to identify the syntenic and rearranged regions for each comparison.
+	## caculate synteny diversity in a sliding window
+		for k in {1..5}; do   perl ../../scripts/calculate.syn.diversity.window.pl ./splitChr/Chr$k.syn.div.pos.txt 5000 1000 splitChr/Chr$k.syn.div.win50kb.step5kb.txt & done &
 
-Let's assume all the alignments in a folder like below
+	## find HOR (HDR)
+	awk '{if ($5>0.5)print}' syn.div.win5kb.step1kb.txt |bedtools merge -i - -d 2002 |bedtools intersect -a - -b ../../../tair10/centromere_Giraut2011.bed -wao |awk '{if ($7==0) print $0"\tA";else print $0"\tC"}' |cut -f 1-3,8  >syn.div.win5kb.step1kb.HDR.bed
 
-/xxx/pairwiseWGA
-/xxx/pairwiseWGA/An-1
-/xxx/pairwiseWGA/An-1/C24
-/xxx/pairwiseWGA/An-1/Cvi
-...
-/xxx/pairwiseWGA/An-1/Sha
-...
-...
-...
-/xxx/pairwiseWGA/Sha
-/xxx/pairwiseWGA/Sha/An-1
-/xxx/pairwiseWGA/Sha/C24
-...
-
-## get coordinates of syntenic regions in all genomes
-  bedtools multiinter -i ../../results/pairwiseAssV2/Col/*/*.wga.syn.block.txt  -names An-1 C24 Cvi Eri Kyo Ler Sha >Col.syn.txt
-  for k in {1..5};do show-aligns -r out_m_i90_l100.delta Chr$k chr$k >out_m_i90_l100.chr$k.aligns ;done &
-  for k in {An-1,C24,Cvi,Eri,Kyo,Ler,Sha};do cat $k/out_m_i90_l100.chr*.aligns >$k/$k.aligns ;done &
-  bedtools multiinter -i ../../results/pairwiseAssV2/Col/*/*.wga.syn.block.txt  -names An-1 C24 Cvi Eri Kyo Ler Sha >Col.syn.txt
-  perl ../../scripts/get.all.syn.coord.pl ./Col.syn.all.txt ../../results/pairwiseAssV2/Col/ ./Col.syn.all.coords.txt &
-
-## caculate synteny diversity for every postion of the genome
-perl ../../scripts/calculate.syn.diversity.pl ./Col.syn.all.coords.txt2 ../../results/pairwiseAssV2/ ../../chrBed_v2 ./syn.diversity.position.Col.txt 
-
-## caculate synteny diversity in a sliding window
-for k in {1..5}; do   perl ../../scripts/calculate.syn.diversity.window.pl ./splitChr/Chr$k.syn.div.pos.txt 5000 1000 splitChr/Chr$k.syn.div.win50kb.step5kb.txt & done &
-
-### find HOR (HDR)
-awk '{if ($5>0.5)print}' syn.div.win5kb.step1kb.txt |bedtools merge -i - -d 2002 |bedtools intersect -a - -b ../../../tair10/centromere_Giraut2011.bed -wao |awk '{if ($7==0) print $0"\tA";else print $0"\tC"}' |cut -f 1-3,8  >syn.div.win5kb.step1kb.HDR.bed
-
-### gene arrangment in the HOR(HDR)
- nohup perl ../../scripts/syndiv/HDR.gene.scheme.2.pl ../00_synDiv/Col.syn.all.coords.txt2 ./HDR.clu.bed ../../01_syri/pairwiseAssV2/ ../../../genefamily/AMPRIL/ver3/AMPRIL.ortholog.groups.csv ../../../genefamily/AMPRIL/ver3/geneBed2/ ../../../genefamily/AMPRIL/ver3/Rgenes/ann/ 50000 ./cluWin50kb2 > np.log2 &
-
-### gene arrangment in the HOR (HDR)
-nohup perl ../../../scripts/Rgenes/R.gene.cluster.wga.ortho.scheme.pl ../../../../wga/07_synDiversity/00_synDiv/Col.syn.all.coords.txt2 ./R.gene.cluster.bed ../../../../wga/01_syri/pairwiseAssV2/ ../AMPRIL.ortholog.groups.csv ../geneBed2/ ./ann/ 20000 ./tmp >tmp.log&
+	## gene arrangment in the HOR(HDR)
+ 	nohup perl ../../scripts/syndiv/HDR.gene.scheme.2.pl ../00_synDiv/Col.syn.all.coords.txt2 ./HDR.clu.bed ../../01_syri/pairwiseAssV2/ ../../../genefamily/AMPRIL/ver3/AMPRIL.ortholog.groups.csv ../../../genefamily/AMPRIL/ver3/geneBed2/ ../../../genefamily/AMPRIL/ver3/Rgenes/ann/ 50000 ./cluWin50kb2 > np.log2 &
+	
+	## R gene arrangment in the HOR (HDR)
+	nohup perl ../../../scripts/Rgenes/R.gene.cluster.wga.ortho.scheme.pl ../../../../wga/07_synDiversity/00_synDiv/Col.syn.all.coords.txt2 ./R.gene.cluster.bed ../../../../wga/01_syri/pairwiseAssV2/ ../AMPRIL.ortholog.groups.csv ../geneBed2/ ./ann/ 20000 ./tmp >tmp.log&
 
   
-
 # Citation:
 Chromosome-level assemblies of multiple Arabidopsis genomes reveal hotspots of rearrangements with altered evolutionary dynamics
 Wen-Biao Jiao, Korbinian Schneeberger. bioRxiv 738880; doi: https://doi.org/10.1101/738880
