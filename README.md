@@ -87,40 +87,40 @@ awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../../../../assembly/ShaNew/eval
 awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit.out >query.gene.blastn.besthit.out
 
 ##input files: 
- >>> Araport11 and accession protein region bed files and sequences files.
-   grep gene  ../../repeat/TErelated/annotation.genes.gff|cut -f 1,4,5,9 |sed 's/TU/model/g' >query.prot.gene.bed   
- >>> Blastp result of accession proteins against Araport11 proteins
- >>> OrthoMCL clustering result between accession and Araport11 proteins
-     grep AT  ../../../../genefamily/AssV2tmp/An-1/prot/Results_Aug11/Orthogroups.txt |grep evm >groups.txt
- >>> Blastn result of Araport11 gene sequences against the accession assembly (Blastn result 1)
-     awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' Col.prot.besthit.out |grep -P 'AT\d' >Col.prot.besthit.out2
- >>> Blastn result of accession gene sequences against Col-0 genome sequences. (Blastn result 2)
-     awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' query.prot.besthit.out >query.prot.besthit.out2
+	Araport11 and accession protein region bed files and sequences files.
+		grep gene  ../../repeat/TErelated/annotation.genes.gff|cut -f 1,4,5,9 |sed 's/TU/model/g' >query.prot.gene.bed   
+	Blastp result of accession proteins against Araport11 proteins
+	OrthoMCL clustering result between accession and Araport11 proteins
+		grep AT  ../../../../genefamily/AssV2tmp/An-1/prot/Results_Aug11/Orthogroups.txt |grep evm >groups.txt
+	Blastn result of Araport11 gene sequences against the accession assembly (Blastn result 1)
+		awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' Col.prot.besthit.out |grep -P 'AT\d' >Col.prot.besthit.out2
+	Blastn result of accession gene sequences against Col-0 genome sequences. (Blastn result 2)
+		awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' query.prot.besthit.out >query.prot.besthit.out2
 
 ##output files:
- >>> potential.mis-merged.gene.txt (function: findMisMer, based on the result of blastp between Col and the Accession)
- >>> potential.mis-spliting.gene.txt (function: findMisSplit. based on the result of blastp between Col and the Accession)	
- >>> potential.query.un-assembled.gene.txt (findMissingMisann. based on the result of Col gene blastn against the accession's assembly)
- >>> potential.missing.gene.txt (findMissingMisann. based on the result of Col gene blastn against the accession's assembly)
- >>> potential.mis-exon-intron.gene.txt
- >>> potential.mis-split.gene.by.blastn.txt
- >>> potential.mis-merge.gene.by.blastn.txt
- >>> potential.m-vs-m.toBeChecked.by.blastn.txt
- >>> futher.check.list
- >>> potential.mis-annotated.gene.txt
- >>> Araport11.ungrouped.gene.analysis.stat
- >>> Araport11.ungrouped.gene.analysis.txt
- >>> Acc(xxx).ungrouped.gene.analysis.stat
- >>> Acc(xxx).ungrouped.gene.analysis.txt
- >>> xxx.genes.to.be.updated.added.txt (based on the potential.xxx.txt from blastn-based analysis)
- >>> xxx.genes.to.be.updated.added.srt.txt	
+	potential.mis-merged.gene.txt (function: findMisMer, based on the result of blastp between Col and the Accession)
+	potential.mis-spliting.gene.txt (function: findMisSplit. based on the result of blastp between Col and the Accession)	
+	potential.query.un-assembled.gene.txt (findMissingMisann. based on the result of Col gene blastn against the accession's assembly)
+	potential.missing.gene.txt (findMissingMisann. based on the result of Col gene blastn against the accession's assembly)
+	potential.mis-exon-intron.gene.txt
+	potential.mis-split.gene.by.blastn.txt
+	potential.mis-merge.gene.by.blastn.txt
+	potential.m-vs-m.toBeChecked.by.blastn.txt
+	futher.check.list
+	potential.mis-annotated.gene.txt
+	Araport11.ungrouped.gene.analysis.stat
+	Araport11.ungrouped.gene.analysis.txt
+	Acc(xxx).ungrouped.gene.analysis.stat
+	Acc(xxx).ungrouped.gene.analysis.txt
+	xxx.genes.to.be.updated.added.txt (based on the potential.xxx.txt from blastn-based analysis)
+	xxx.genes.to.be.updated.added.srt.txt	
 
 ##to find genes:
- >>> mis-merged (Blastp result, blastn)
- >>> mis-split (Blastp result, blastn)
- >>> wrong exon-intron structure (blastn)
- >>> false protein-coding genes (not annotated in Araport 11 but actually they were assembled in the Col-0 genome) (Blastn result 2)
- >>> missing genes (not annotated in accession, but actually they were assembled)  (Blastn result 1)
+	mis-merged (Blastp result, blastn)
+	mis-split (Blastp result, blastn)
+	wrong exon-intron structure (blastn)
+	false protein-coding genes (not annotated in Araport 11 but actually they were assembled in the Col-0 genome) (Blastn result 2)
+	missing genes (not annotated in accession, but actually they were assembled)  (Blastn result 1)
 
    
 nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt -o ./run2 -n  Col.prot.besthit.out2 -c query.prot.besthit.out2 -p blastp.result -s Col.prot.gene.bed -q query.prot.gene.bed -x Col.prot.fasta -y query.prot.fasta -a Col.gene.LoF.txt -b query.gene.LoF.txt -r ../../RNAseq/hisat2/rnaseq.4evm.gff >np.run2&
