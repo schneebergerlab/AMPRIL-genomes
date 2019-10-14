@@ -1,5 +1,5 @@
 # Overview
-These scripts are used for the project of seven Arabidopsis thaliana genomes 
+These scripts are used for the project of seven Arabidopsis thaliana genomes, including 
 	
 	Protein-coding gene annotation
 	
