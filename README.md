@@ -14,10 +14,8 @@ All scripts can be run directly.
 
 # Usage
 
-
-
-# workflow for protein-coding gene annotation 
-## step 1: run pipeline for protein-coding gene annotation
+## workflow for protein-coding gene annotation 
+### step 1: run pipeline for protein-coding gene annotation
   
   python ../scripts/evm.pasa.integrate.pipeline.py -f ./annotation.config
   This script will do 
@@ -30,22 +28,22 @@ All scripts can be run directly.
   6) get the gene, protein, CDS sequences based on the gene model gff3 file and reference fasta file
   The results will be included in the file evm.all.gff3
   
-## step 2: repeat annotation
+### step 2: repeat annotation
   RepeatMasker -species arabidopsis -gff -dir ./ -pa 20 ../../reference/chr.all.v2.0.fasta
   perl ../../../scripts/repeat.classfied.gff3.pl ./chr.all.v2.0.fasta.out.gff ./chr.all.v2.0.fasta.out ./chr.all.v2.0.fasta.repeats.ann.gff3 repeat.ann.stats &
   egrep -v 'Low|Simple|RNA|other|Satellite' chr.all.v2.0.fasta.repeats.ann.gff3 |cut -f 1,4,5,9 >chr.all.v2.0.TE.bed
 
-## step 3: identify TE-related genes
+### step 3: identify TE-related genes
   perl ../../../scripts/remove.TErelated.genes.pl ../../EVM_PASA/evm.annotation.protein.fasta ../../EVM_PASA/evm.annotation.gene.fasta ../RepeatMasker/chr.all.v2.0.TE.bed ../../EVM_PASA/evm.all.gff3 ./ 
 
-## step 4: non-coding gene annotation
+### step 4: non-coding gene annotation
   cmscan --cpu 20 --tblout Rfam.scan.out ../../../data/Rfam/Rfam.cm ../chr.all.v2.0.split.fasta
   perl  ../../../scripts/noncoding.infernal.output.parser.pl ./Rfam.scan.out ./ >nohup.out & 
 
-## step 5: get the initial version
+### step 5: get the initial version
    nohup python ./scripts/gene.id.update.py -i ./ -v 2.0 >log/gene.id.update.log &
    
-## step 6: evaluation
+### step 6: evaluation
   awk '{if ($3!="miRNA_primary_transcript" && $3!="pseudogenic_exon" && $3!="pseudogenic_transcript" && $3!="pseudogenic_tRNA" && $3!="transposon_fragment" && $3!="mRNA" && $3!="protein" && $3 !="CDS" && $3!="exon" && $3!="five_prime_UTR" && $3!="three_prime_UTR" && $3!="lnc_RNA") print}' Araport11_GFF3_genes_transposons.201606.gff |grep -v '^#' |cut -f 1,4,5,9 |grep -vP '\.\d+\;Parent' |grep -v  'ChrC|ChrM' >Araport11_gene.TE.chr1-5.bed &
 
 cd /AMPRILdenovo/annotation/Sha/evaluation
@@ -89,7 +87,7 @@ ln -s  ../../../../genefamily/blastpAraport11/Sha/orthomcl/groups.txt ./
 awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../../../../assembly/ShaNew/evaluation/Araport11blastn/araport11.gene.besthit.out >Araport11.gene.blastn.besthit.out
 awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit.out >query.gene.blastn.besthit.out
 
-## input files: 
+##input files: 
 #	Araport11 and accession protein region bed files and sequences files.
        grep gene  ../../repeat/TErelated/annotation.genes.gff|cut -f 1,4,5,9 |sed 's/TU/model/g' >query.prot.gene.bed
      for k in {C24,Cvi,Eri,Kyo,Ler};do grep gene  $k/repeat/TErelated/annotation.genes.gff|cut -f 1,4,5,9 |sed 's/TU/model/g' >$k/evaluation/misannotation/query.prot.gene.bed;done
@@ -100,7 +98,7 @@ awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit
          awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' Col.prot.besthit.out |grep -P 'AT\d' >Col.prot.besthit.out2
 #	Blastn result of accession gene sequences against Col-0 genome sequences. (Blastn result 2)
            awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' query.prot.besthit.out >query.prot.besthit.out2
-## output files:
+##output files:
 #		potential.mis-merged.gene.txt (function: findMisMer, based on the result of blastp between Col and the Accession)
 #		potential.mis-spliting.gene.txt (function: findMisSplit. based on the result of blastp between Col and the Accession)	
 #		potential.query.un-assembled.gene.txt (findMissingMisann. based on the result of Col gene blastn against the accession's assembly)
@@ -122,7 +120,7 @@ awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit
     minId = 80
     maxIdf = 10
     maxSplitCov = 0.8
-## to find genes:
+##to find genes:
 #	mis-merged (Blastp result, blastn)
 #	mis-split (Blastp result, blastn)
 #	wrong exon-intron structure (blastn)
@@ -145,13 +143,13 @@ awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit
  nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt -o ./ -n  Col.prot.besthit.out2 -c query.prot.besthit.out2 -p blastp.result -s Col.prot.gene.bed -q query.prot.gene.bed -x Col.prot.fasta -y query.prot.fasta  >nohup.out&
 nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt -o ./run2 -n  Col.prot.besthit.out2 -c query.prot.besthit.out2 -p blastp.result -s Col.prot.gene.bed -q query.prot.gene.bed -x Col.prot.fasta -y query.prot.fasta -a Col.gene.LoF.txt -b query.gene.LoF.txt -r ../../RNAseq/hisat2/rnaseq.4evm.gff >np.run2&
 
-# step 7: update    
-## 1) run scipio to align the protein sequences from Araport11 annoation
+### step 7: update    
+#### 1) run scipio to align the protein sequences from Araport11 annoation
   nohup python ../../../scripts/run.scipio.py -i ../../../data/protein/Araport11-split -o ./  -r ../../reference/chr.all.v1.0.fasta >run.log &
   
   ln -s ../misannotation/Cvi.genes.to.be.updated.added.srt.txt ./; grep chr Cvi.genes.to.be.updated.added.srt.txt >genes.to.be.updated.txt;  grep -v chr Cvi.genes.to.be.updated.added.srt.txt >>genes.to.be.updated.txt ; ln -s ../../abinitio/abinitio.4evm.gff ; cp ../../../An-1/evaluation/update2/srt.gff.pl ./; perl ./srt.gff.pl ./abinitio.4evm.gff SNAP SNAP.ann.gff; perl srt.gff.pl ./abinitio.4evm.gff GlimmerHMM GlimmerHMM.ann.gff  ; cat ../../augustus/genome.chunk.*.gff |egrep -v '#|intron|transcription|codon' > ../../augustus/augustus.ann.gff; ln -s ../../augustus/augustus.ann.gff; ln -s ../misannotation/Araport11.gene.blastn.besthit.out2 ./ ; ln -s ../../../../tair10/Araport11/Araport11_genes.201606.pep.repr.fasta; ln -s ../misannotation/Araport11.protein.bed ./;  ln -s ../../version/Cvi.protein-coding.genes.v1.0.gff ./ ; cat ../../scipio/run2/splitOut/protein.chunk.*.gff >../../scipio/run2/splitOut/scipio.gff; ln -s  ../../scipio/run2/splitOut/scipio.gff ./ ;  ln -s ../../../../wga/results/Cvi/Cvi.wga.snp.indel.gene.LOF.txt ./wga.snp.indel.gene.LoF.txt
 
-## 2) update
+#### 2) update
 #	workdir:
 #	input files:
 #		gene.to.be.updated.txt
@@ -189,7 +187,7 @@ nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt
   
 
 
-# Update gene ID
+#### Update gene ID
  for k in {An-1,C24,Cvi,Eri}; do  
    python -u ./scripts/annotation.gene.ID.update.py -i  $k/evaluation/update/run2/updated.highConf.gff -n ./$k/version2/tmp/$k.genes.annotation.2.0.tmp.gff -o ./$k/version2 -v v2.0 -a $k -g $k/reference/chr.all.v2.0.fasta > $k/version2/updateID.log ;
  done 
