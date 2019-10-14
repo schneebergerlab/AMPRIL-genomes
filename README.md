@@ -10,6 +10,7 @@ R (3.5.2)
 
 # Installation
 git clone https://github.com/schneebergerlab/AMPRIL-genomes.git
+
 All scripts can be run directly.
 
 # Usage
