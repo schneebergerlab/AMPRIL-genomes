@@ -6,8 +6,11 @@ https://1001genomes.org/data/MPIPZ/MPIPZJiao2020/releases/current/
 
 # System Requirements
 The scripts have been tested on Linux (4.4.0-97-generic #120-Ubuntu)
+
 Perl (5.22.2)
+
 Python (2.7.15)
+
 R (3.5.2)
 
 # Installation
