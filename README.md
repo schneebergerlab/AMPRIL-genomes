@@ -1,8 +1,12 @@
 # Overview
 These scripts are used for the project of seven Arabidopsis thaliana genomes 
+	
 	Protein-coding gene annotation
+	
 	Pan-genome construction
+	
 	Structural variation calling
+	
 	Synteny diversity analysis
 
 All related raw reads, assembly, annotation results can be freely accessed in 1001 Genomes Project website
