@@ -1,6 +1,8 @@
 # Overview
 These scripts are used for the project of seven Arabidopsis thaliana genomes assembly, annotation and comparisons.
 
+All related raw reads, assembly, annotation results can be freely accessed in 1001 Genomes Project website
+https://1001genomes.org/data/MPIPZ/MPIPZJiao2020/releases/current/
 
 # System Requirements
 The scripts have been tested on Linux (4.4.0-97-generic #120-Ubuntu)
