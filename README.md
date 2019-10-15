@@ -12,6 +12,10 @@ These scripts are used for the project of seven Arabidopsis thaliana genomes, in
 All related raw reads, assembly, annotation results can be freely accessed in 1001 Genomes Project website
 https://1001genomes.org/data/MPIPZ/MPIPZJiao2020/releases/current/
 
+### Citation:
+Chromosome-level assemblies of multiple Arabidopsis genomes reveal hotspots of rearrangements with altered evolutionary dynamics
+Wen-Biao Jiao, Korbinian Schneeberger. bioRxiv 738880; doi: https://doi.org/10.1101/738880
+
 # System Requirements
 The scripts have been tested on Linux (4.4.0-97-generic #120-Ubuntu)
 
@@ -270,7 +274,5 @@ All scripts can be run directly.
 	nohup perl ../../../scripts/Rgenes/R.gene.cluster.wga.ortho.scheme.pl ../../../../wga/07_synDiversity/00_synDiv/Col.syn.all.coords.txt2 ./R.gene.cluster.bed ../../../../wga/01_syri/pairwiseAssV2/ ../AMPRIL.ortholog.groups.csv ../geneBed2/ ./ann/ 20000 ./tmp >tmp.log&
 
   
-# Citation:
-Chromosome-level assemblies of multiple Arabidopsis genomes reveal hotspots of rearrangements with altered evolutionary dynamics
-Wen-Biao Jiao, Korbinian Schneeberger. bioRxiv 738880; doi: https://doi.org/10.1101/738880
+
 
