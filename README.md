@@ -13,8 +13,8 @@ All related raw reads, assembly, annotation results can be freely accessed in 10
 https://1001genomes.org/data/MPIPZ/MPIPZJiao2020/releases/current/
 
 ### Citation:
-Chromosome-level assemblies of multiple Arabidopsis genomes reveal hotspots of rearrangements with altered evolutionary dynamics
-Wen-Biao Jiao, Korbinian Schneeberger. bioRxiv 738880; doi: https://doi.org/10.1101/738880
+Jiao, W., Schneeberger, K. Chromosome-level assemblies of multiple Arabidopsis genomes reveal hotspots of rearrangements with altered evolutionary dynamics. Nat Commun 11, 989 (2020). https://doi.org/10.1038/s41467-020-14779-y
+
 
 # System Requirements
 The scripts have been tested on Linux (4.4.0-97-generic #120-Ubuntu)
