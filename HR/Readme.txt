@@ -1,14 +1,20 @@
 
 # synteny diversity
-Synteny diversity was defined as the average fraction of non-syntenic sites found within all pairwise genome comparisons within a given population. Here we denote synteny diversity as (Eq. 3) 
+Synteny diversity was defined as the average fraction of non-syntenic sites found within all pairwise genome comparisons within
+a given population. Here we denote synteny diversity as (Eq. 3) 
 
     𝜋𝑠𝑦𝑛=∑𝑥𝑖𝑥𝑗𝜋𝑖𝑗, (3) 
 
-where xi and xj refer to the frequencies of sequence i and j and πij to the average probability of a position to be non-syntenic between sequence i and j . Note, πsyn can be calculated in a given region or for the entire genome. However even when calculated for small regions the annotation of synteny still needs to be established within the context of the whole genomes to avoid false assignments of homologous but non-allelic sequence. Here we used the annotation of SyRI to define syntenic regions. πsyn values can range from 0 to 1, with higher values referring to a higher average degree of non-syntenic regions between the genomes.
+where xi and xj refer to the frequencies of sequence i and j and πij to the average probability of a position to be non-syntenic
+between sequence i and j . Note, πsyn can be calculated in a given region or for the entire genome. However even when calculated
+for small regions the annotation of synteny still needs to be established within the context of the whole genomes to avoid false
+assignments of homologous but non-allelic sequence. Here we used the annotation of SyRI to define syntenic regions. πsyn values
+can range from 0 to 1, with higher values referring to a higher average degree of non-syntenic regions between the genomes.
 
 
 # step 1: pairwise whole genome alignment and synteny identification 
-Before caculate synteny diversity, please run all pairwise whole genome comparison using the tool nucmer in the MUMmer4 package and run SyRi to identify the syntenic and rearranged regions for each comparison.
+Before caculate synteny diversity, please run all pairwise whole genome comparison using the tool nucmer in the MUMmer4 package
+and run SyRi to identify the syntenic and rearranged regions for each comparison.
 
 Let's assume all the alignments of between our 8 A.thaliana genomes in a folder like below
 /xxx/pairwiseWGA
