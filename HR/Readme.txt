@@ -35,13 +35,11 @@ Let's assume all the alignments of between our 8 A.thaliana genomes in a folder 
   bedtools multiinter -i /xxx/pairwiseWGA/Col/*/*.wga.syn.block.txt  -names An-1 C24 Cvi Eri Kyo Ler Sha >Col.syn.txt
   
   Note: file format for seven *.wga.syn.block.txt files at below. Tab seprated ,
-  
-  Chr1    278 1703    Chr1    2148    751 -   AB  INV
+ 
   Chr1    1926    23160   Chr1    2148    23388   +   AB  SYN
   Chr1    23138   44997   Chr1    23454   45322   +   AB  SYN
   Chr1    45229   68996   Chr1    45320   69077   +   AB  SYN
   Chr1    69082   76826   Chr1    70212   77969   +   AB  SYN
-  Chr1    77299   77557   Chr5    17867685    17867427    -   A   DUP
   Chr1    77557   132220  Chr1    77966   132688  +   AB  SYN
 
   The latest version of SyRI does not generate outputs like the above, while it can be easily generated from the SyRI output. e.g: grep SYNAL syri.out|cut -f 1-3,6-8,10  The 7th and 8th columns are not necessary. 
