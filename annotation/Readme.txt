@@ -133,19 +133,35 @@ nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt
 ## 1) run scipio to align the protein sequences from Araport11 annoation
   nohup python ../../../scripts/run.scipio.py -i ../../../data/protein/Araport11-split -o ./  -r ../../reference/chr.all.v1.0.fasta >run.log &
   
-  ln -s ../misannotation/Cvi.genes.to.be.updated.added.srt.txt ./; grep chr Cvi.genes.to.be.updated.added.srt.txt >genes.to.be.updated.txt;  grep -v chr Cvi.genes.to.be.updated.added.srt.txt >>genes.to.be.updated.txt ; ln -s ../../abinitio/abinitio.4evm.gff ; cp ../../../An-1/evaluation/update2/srt.gff.pl ./; perl ./srt.gff.pl ./abinitio.4evm.gff SNAP SNAP.ann.gff; perl srt.gff.pl ./abinitio.4evm.gff GlimmerHMM GlimmerHMM.ann.gff  ; cat ../../augustus/genome.chunk.*.gff |egrep -v '#|intron|transcription|codon' > ../../augustus/augustus.ann.gff; ln -s ../../augustus/augustus.ann.gff; ln -s ../misannotation/Araport11.gene.blastn.besthit.out2 ./ ; ln -s ../../../../tair10/Araport11/Araport11_genes.201606.pep.repr.fasta; ln -s ../misannotation/Araport11.protein.bed ./;  ln -s ../../version/Cvi.protein-coding.genes.v1.0.gff ./ ; cat ../../scipio/run2/splitOut/protein.chunk.*.gff >../../scipio/run2/splitOut/scipio.gff; ln -s  ../../scipio/run2/splitOut/scipio.gff ./ ;  ln -s ../../../../wga/results/Cvi/Cvi.wga.snp.indel.gene.LOF.txt ./wga.snp.indel.gene.LoF.txt
+  ln -s ../misannotation/Cvi.genes.to.be.updated.added.srt.txt ./
+  grep chr Cvi.genes.to.be.updated.added.srt.txt >genes.to.be.updated.txt 
+  grep -v chr Cvi.genes.to.be.updated.added.srt.txt >>genes.to.be.updated.txt 
+  
+  ln -s ../../abinitio/abinitio.4evm.gff 
+  cp ../../../An-1/evaluation/update2/srt.gff.pl ./
+  perl ./srt.gff.pl ./abinitio.4evm.gff SNAP SNAP.ann.gff
+  perl srt.gff.pl ./abinitio.4evm.gff GlimmerHMM GlimmerHMM.ann.gff  
+  cat ../../augustus/genome.chunk.*.gff |egrep -v '#|intron|transcription|codon' > ../../augustus/augustus.ann.gff
+  ln -s ../../augustus/augustus.ann.gff
+  
+  ln -s ../misannotation/Araport11.gene.blastn.besthit.out2 ./ 
+  ln -s ../../../../tair10/Araport11/Araport11_genes.201606.pep.repr.fasta
+  ln -s ../misannotation/Araport11.protein.bed ./
+  ln -s ../../version/Cvi.protein-coding.genes.v1.0.gff ./ 
+  cat ../../scipio/run2/splitOut/protein.chunk.*.gff >../../scipio/run2/splitOut/scipio.gff
+  ln -s  ../../scipio/run2/splitOut/scipio.gff ./ 
+  ln -s ../../../../wga/results/Cvi/Cvi.wga.snp.indel.gene.LOF.txt ./wga.snp.indel.gene.LoF.txt
 
 ## 2) update
-#	workdir:
 #	input files:
-#		gene.to.be.updated.txt
-#		xx.protein-coding.genes.v1.0.gff
+#		gene.to.be.updated.txt; xx.protein-coding.genes.v1.0.gff
 #		scipio.gff
-#		wga.snp.indel.gene.LoF.txt
 #		augustus.ann.gff; SNPA.ann.gff; GlimmerHMM.ann.gff
+#		wga.snp.indel.gene.LoF.txt
 #		Col gene blastn best hit out
 #		Col Araport11 protein sequence and bed files
 #		ChrCM.txt (a few of organella contigs were not removed in the assembly process)
+
 #	output files:
 #		genes.to.be.updated.txt2
 #		updated.gff
@@ -153,19 +169,22 @@ nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt
 #		updated.highConf.gff
 #		updated.highConf.prot.fasta
 #	Method:
-#		1) check the LoF information resulting from WGA-based SNPs and InDel annotation, and the Col protein sequence alignment result from Scipio, add the update information :
-#			ChrCM: ChrC or ChrM genes
-#			LowConf: low confident genes
-#			unchange: keep the previous annotation, 
-#			ChangeSci: annotate based on Scipio result (checkScipio: start codon, stop codon, splice sites, frame-shift, premature stop-codon gain; check AugGenes snapGenes glimGene, check AugGenes2[ab initio], check GeneWise)
-#			ChangeAug: annotate based on Augustus ( check AugGenes snapGenes glimGene, check AugGenes2[ab initio], check GeneWise)
-#			ChangeSciAug: annotate based on scipio and augustus (checkScipio, check AugGenes snapGenes glimGene, check AugGenes2[ab initio], check GeneWise)
-#			not-add: not annotate	
-#			
-#		2) prepare the other annotation result from Augustus-evidence-based method, SNAP ab initio and GlimmerHMM ab initio result
-	 cat ../../abinitio/augustus/augustus.hint.chunk.*.gff |egrep -v '#|intron|transcription|codon' > ../../augustus/augustus.ann.gff
-#		3) update 
-  nohup python ../../../scripts/update.misann.genes.py -u genes.to.be.updated.txt -g An-1.protein-coding.genes.v2.0.gff -o ./ -s scipio.gff -w wga.snp.indel.gene.LoF.txt -c ChrCM.txt -a augustus.ann.gff -n SNAP.ann.gff -l GlimmerHMM.ann.gff -b ../misann2/Araport11.gene.blastn.besthit.out2  -f ../../reference/chr.all.v2.0.fasta -p  Araport11_genes.201606.pep.repr.fasta -i ./Araport11.protein.bed >update.log2 &
+#    1) check the LoF from WGA-based variants snpEFF annotation, and the Col protein sequence alignment result from Scipio, add the update information :
+#	ChrCM: ChrC or ChrM genes
+#	LowConf: low confident genes
+#	unchange: keep the previous annotation, 
+#	ChangeSci: annotate based on Scipio result (checkScipio: start codon, stop codon, splice sites, frame-shift, premature stop-codon gain; check AugGenes snapGenes glimGene, check AugGenes2[ab initio], check GeneWise)
+#	ChangeAug: annotate based on Augustus(check AugGenes snapGenes glimGene, check AugGenes2[ab initio], check GeneWise)
+#	ChangeSciAug: annotate based on scipio and augustus (checkScipio, check AugGenes snapGenes glimGene, check AugGenes2[ab initio], check GeneWise)
+#	not-add: not annotate	
+
+#    2) prepare the other annotation from Augustus-evidence-based method, SNAP ab initio and GlimmerHMM ab initio result
+   cat ../../abinitio/augustus/augustus.hint.chunk.*.gff |egrep -v '#|intron|transcription|codon' > ../../augustus/augustus.ann.gff
+#.   3) update 
+  python ../../../scripts/update.misann.genes.py -u genes.to.be.updated.txt -g An-1.protein-coding.genes.v2.0.gff -o ./  \
+  -s scipio.gff -a augustus.ann.gff -n SNAP.ann.gff -l GlimmerHMM.ann.gff \ 
+  -w wga.snp.indel.gene.LoF.txt -c ChrCM.txt -b ../misann2/Araport11.gene.blastn.besthit.out2  \ 
+  -f ../../reference/chr.all.v2.0.fasta -p Araport11_genes.201606.pep.repr.fasta -i ./Araport11.protein.bed >update.log2 &
   
   python ../../scripts/annotation.gene.ID.update.py -i update2/updated.highConf.gff -n ../version/An-1.genes.annotation.v2.0.gff -o ../version -v v2.5 -a An-1 -g ../reference/chr.all.v2.0.fasta &
 
