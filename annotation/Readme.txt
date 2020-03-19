@@ -188,7 +188,11 @@ nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt
   
   python ../../scripts/annotation.gene.ID.update.py -i update2/updated.highConf.gff -n ../version/An-1.genes.annotation.v2.0.gff -o ../version -v v2.5 -a An-1 -g ../reference/chr.all.v2.0.fasta &
 
-  nohup python -u ../../../scripts/update.misann.genes.py -u genes.to.be.updated.txt -g annotation.genes.gff -o ./run2 -s scipio.gff -x Col.gene.LoF.txt -y query.gene.LoF.txt -c ChrCM.txt -a augustus.ann.gff -n SNAP.4evm.gff -l glimmerhmm.4evm.gff -b ./Col.gene.blastn.besthit.bed  -f ../../reference/chr.all.v2.0.fasta -p Col.prot.fasta -i ./Col.prot.gene.bed >update.run2.log  &
+  nohup python -u ../../../scripts/update.misann.genes.py -u genes.to.be.updated.txt -g annotation.genes.gff -o ./run2 \
+  -s scipio.gff -x Col.gene.LoF.txt -y query.gene.LoF.txt -c ChrCM.txt \
+  -a augustus.ann.gff -n SNAP.4evm.gff -l glimmerhmm.4evm.gff \
+  -b ./Col.gene.blastn.besthit.bed  -f ../../reference/chr.all.v2.0.fasta \
+  -p Col.prot.fasta -i ./Col.prot.gene.bed >update.run2.log  &
   
 
 
