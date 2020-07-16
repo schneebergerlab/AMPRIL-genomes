@@ -32,7 +32,7 @@ for my $i (0..$#accs-1) {
   for my $j ($i+1..$#accs) {
   	my $acc1 = $accs[$i];
   	my $acc2 = $accs[$j];
-  	for my $k (5..5) {
+  	for my $k (1..$n) {
   	  my $out = "$outdir/$acc1.$acc2.Chr$k.pairwise.syn.txt";
   	  my $log = "$outdir/np.$acc1.$acc2.Chr$k.log";
   	  my $chrom = $chr.$k;
