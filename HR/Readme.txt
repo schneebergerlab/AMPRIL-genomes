@@ -74,6 +74,13 @@ Chr3	23034411
 Chr4	18785460
 Chr5	26733864
 
+Alternatively, in order to avoid too much memory occupation, caculate each pairwise per chromosome, then merge and calculate
+nohup perl ../../scripts/run.cal.syn.div.pl ./Col.syn.all.coords.txt2 ../../results/pairwiseAssV2/ ../../chrBed_v2/ ../../scripts/calculate.syn.diversity.pairwise.chr.pl ./splitChr/ > np.chr4 &
+
+#
+nohup perl ../../scripts/syn.div.merge.pl ./splitChr/ Chr2 ../../chrBed_v2/Col.leng.txt ./splitChr/Chr2.syn.div.pos.txt > np.merge2
+
+
 # step 4: caculate synteny diversity in a sliding window
   for k in {1..5}; do   perl calculate.syn.diversity.window.pl ./splitChr/Chr$k.syn.div.pos.txt 5000 1000 splitChr/Chr$k.syn.div.win5kb.step1kb.txt & done &
   cat syn.div.win5kb.step1kb.txt  > 
@@ -85,6 +92,7 @@ Chr5	26733864
       Chr1	2001	7000	2	0.000
       Chr1	3001	8000	3	0.000
       Chr1	4001	9000	4	0.000
+      
 
 # other downstream analysis
 ## find Hotspot of Rearrangements (HOR)
