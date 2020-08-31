@@ -63,9 +63,13 @@ Note: the folder chrBed_v2 contains xx.leng.txt (format: chromosome\tlength\n) f
 e.g: $cat chrBed_v2/An-1.leng.txt
 
 Chr1	30401407
+
 Chr2	19417579
+
 Chr3	23034411
+
 Chr4	18785460
+
 Chr5	26733864
 
 the output files:
