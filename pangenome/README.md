@@ -70,13 +70,17 @@ Chr5	26733864
 
 the output files:
 
-pan-genome.wga.conensus.stats
+pan-genome.wga.conensus.stats  # for the pan-genome size
 
-pan-genome.wga.core.stats
+pan-genome.wga.core.stats  # for the core-genome size
 
-pan-genome.wga.newseq.stats 
+pan-genome.wga.newseq.stats # for the new sequence size
 
-Since we have eight genomes, each line represents the pan-genome or core-genome or new sequence size under different number of input genomes (from 1 to 8 genomes). Each line is tab-seperated, each number is the pan-genome or core-genome or new sequence size calculated under different combinations of genomes.
+Since we have eight genomes, the result file contains eigh lines. 
+
+Each line represents the pan-genome or core-genome or new sequence size under different number of input genomes (from 1 to 8 genomes). 
+
+Each line is tab-seperated, each number is the pan-genome or core-genome or new sequence size calculated under different combinations of genomes.
 
 
 
