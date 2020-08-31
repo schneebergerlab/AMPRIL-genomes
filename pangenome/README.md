@@ -6,18 +6,31 @@ pangenome can be built based on the whole genome sequence alignment or protein-c
 ## step 1: do all pairwise whole genome comparisons using the tool nucmer in the package MUMmer
 
 Let's assume all the alignments of between our 8 A.thaliana genomes in a folder like below
+
 /xxx/pairwiseWGA
+
 /xxx/pairwiseWGA/An-1
+
 /xxx/pairwiseWGA/An-1/C24 (files: out_m_i90_l100.coords, C24.wga.block.txt, C24.del.bed, C24.ins.bed)
+
 /xxx/pairwiseWGA/An-1/Cvi
+
 ...
+
 /xxx/pairwiseWGA/An-1/Sha
+
 ...
+
 ...
+
 ...
+
 /xxx/pairwiseWGA/Sha
+
 /xxx/pairwiseWGA/Sha/An-1
+
 /xxx/pairwiseWGA/Sha/C24
+
 ...
 
 Note:
