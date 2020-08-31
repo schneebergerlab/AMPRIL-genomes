@@ -68,6 +68,16 @@ Chr3	23034411
 Chr4	18785460
 Chr5	26733864
 
+the output files:
+
+pan-genome.wga.conensus.stats
+
+pan-genome.wga.core.stats
+
+pan-genome.wga.newseq.stats 
+
+Since we have eight genomes, each line represents the pan-genome or core-genome or new sequence size under different number of input genomes (from 1 to 8 genomes). Each line is tab-seperated, each number is the pan-genome or core-genome or new sequence size calculated under different combinations of genomes.
+
 
 
 # Pan-genome: protein-coding genes ortholog clustering
