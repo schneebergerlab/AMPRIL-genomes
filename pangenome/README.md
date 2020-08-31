@@ -1,9 +1,9 @@
 
 pangenome can be built based on the whole genome sequence alignment or protein-coding genes ortholog clustering
 
-# Pan-genome based on genome sequence alignment
+## Pan-genome based on genome sequence alignment
 
-## step 1: do all pairwise whole genome comparisons using the tool nucmer in the package MUMmer
+### step 1: do all pairwise whole genome comparisons using the tool nucmer in the package MUMmer
 
 Let's assume all the alignments of between our 8 A.thaliana genomes in a folder like below
 
@@ -55,7 +55,7 @@ Note:
   bedtools complement -i -g C24.
   
   
-## step 2: get pan-genome
+### step 2: get pan-genome
 python -u wga.pangenome.py -w ./pairwiseAssV2 -o ./ -g ../chrBed_v2/ &
 
 Note: the folder chrBed_v2 contains xx.leng.txt (format: chromosome\tlength\n) files for each genome 
@@ -84,5 +84,5 @@ Each line is tab-separated, each number is the pan-genome or core-genome or new 
 
 
 
-# Pan-genome: protein-coding genes ortholog clustering
+## Pan-genome: protein-coding genes ortholog clustering
 python pangenome.build.py -g AMPRIL.ortholog.groups.csv -o ./
