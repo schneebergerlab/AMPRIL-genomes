@@ -16,7 +16,9 @@
   
 ## step 2: repeat annotation
   RepeatMasker -species arabidopsis -gff -dir ./ -pa 20 ../../reference/chr.all.v2.0.fasta
+  
   perl ../../../scripts/repeat.classfied.gff3.pl ./chr.all.v2.0.fasta.out.gff ./chr.all.v2.0.fasta.out ./chr.all.v2.0.fasta.repeats.ann.gff3 repeat.ann.stats &
+  
   egrep -v 'Low|Simple|RNA|other|Satellite' chr.all.v2.0.fasta.repeats.ann.gff3 |cut -f 1,4,5,9 >chr.all.v2.0.TE.bed
 
 ## step 3: identify TE-related genes
