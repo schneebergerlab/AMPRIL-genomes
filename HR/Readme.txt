@@ -50,7 +50,9 @@ Let's assume all the alignments of between our 8 A.thaliana genomes in a folder 
   
   for k in {An-1,C24,Cvi,Eri,Kyo,Ler,Sha};  do cat $k/out_m_i90_l100.chr*.aligns >$k/$k.aligns ;done &
   
-  perl get.all.syn.coord.pl ./Col.syn.all.txt ../../results/pairwiseAssV2/Col/ ./Col.syn.all.coords.txt &
+  awk '{if ($4==7) print}' Col.syn.txt >Col.syn.all.txt  ##change the "7" according to the number of your genomes
+  
+  perl get.all.syn.coord.pl ./Col.syn.all.txt ../../results/pairwiseAssV2/Col/ ./Col.syn.all.coords.txt &  ##maybe, please modify the line 86 and 98 accordingly if you have different number of genomes
   
   The output file Col.syn.all.coords.txt :
   $head -n3 syn/Col.syn.all.coords.txt (every three columns reprent a region of one genome)
