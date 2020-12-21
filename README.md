@@ -1,4 +1,6 @@
-# Overview
+## Overview
+### Please be informed that all scripts here are only for reproducing the results based on our 8 thaliana genomes. You may have to modify the scripts if you would like to apply them to your projects
+
 These scripts are used for the project of seven Arabidopsis thaliana genomes, including 
 	
 	Protein-coding gene annotation
@@ -16,7 +18,7 @@ https://1001genomes.org/data/MPIPZ/MPIPZJiao2020/releases/current/
 Jiao, W., Schneeberger, K. Chromosome-level assemblies of multiple Arabidopsis genomes reveal hotspots of rearrangements with altered evolutionary dynamics. Nat Commun 11, 989 (2020). https://doi.org/10.1038/s41467-020-14779-y
 
 
-# System Requirements
+## System Requirements
 The scripts have been tested on Linux (4.4.0-97-generic #120-Ubuntu)
 
 Perl (5.22.2)
@@ -25,14 +27,14 @@ Python (2.7.15)
 
 R (3.5.2)
 
-# Installation
+## Installation
 git clone https://github.com/schneebergerlab/AMPRIL-genomes.git
 
 All scripts can be run directly.
 
-# Usage
+## Usage
 
-## workflow for protein-coding gene annotation 
+### workflow for protein-coding gene annotation 
 	working directory stucture (e.g: Cvi genome:
 	/AMPRIL/annotation/Cvi
 	/AMPRIL/annotation/Cvi/reference
@@ -45,7 +47,7 @@ All scripts can be run directly.
 	/AMPRIL/annotation/scripts
 	/AMPRIL/genefamily/blastpAraport11/Cvi
 
-### step 1: run pipeline for protein-coding gene annotation
+#### step 1: run pipeline for protein-coding gene annotation
 	python ../scripts/evm.pasa.integrate.pipeline.py -f ./annotation.config
   	This script will do 
   
@@ -57,13 +59,13 @@ All scripts can be run directly.
   	6) get the gene, protein, CDS sequences based on the gene model gff3 file and reference fasta file
   	The results will be included in the file evm.all.gff3
   
-### step 2: Annotate repeats and TE-related genes
+#### step 2: Annotate repeats and TE-related genes
 	RepeatMasker -species arabidopsis -gff -dir ./ -pa 20 ../../reference/chr.all.v2.0.fasta
   	perl ../../../scripts/repeat.classfied.gff3.pl ./chr.all.v2.0.fasta.out.gff ./chr.all.v2.0.fasta.out ./chr.all.v2.0.fasta.repeats.ann.gff3 repeat.ann.stats &
   	egrep -v 'Low|Simple|RNA|other|Satellite' chr.all.v2.0.fasta.repeats.ann.gff3 |cut -f 1,4,5,9 >chr.all.v2.0.TE.bed
   	perl ../../../scripts/remove.TErelated.genes.pl ../../EVM_PASA/evm.annotation.protein.fasta ../../EVM_PASA/evm.annotation.gene.fasta ../RepeatMasker/chr.all.v2.0.TE.bed ../../EVM_PASA/evm.all.gff3 ./ 
 
-### step 3: get the a first version of gene models and evaluate
+#### step 3: get the a first version of gene models and evaluate
 	get the first version
 	nohup python ./scripts/gene.id.update.py -i ./ -v 2.0 >log/gene.id.update.log &
 	
@@ -72,7 +74,7 @@ All scripts can be run directly.
 	cd /AMPRIL/annotation/Cvi/evaluation
 	mkdir blastnCol misannotation update 
 
-#### 1) gene seq. blastn
+##### 1) gene seq. blastn
 	cd blastnCol
 	ln -s ../../version/Sha.v2.0.gene.fasta ./gene.fasta
 	blastn -query ./gene.fasta  -db TAIR10_chr_all.fas -num_threads 20 -evalue 1e-5 -out gene.blastn.Col.out &
@@ -83,7 +85,7 @@ All scripts can be run directly.
 	blastn -query Araport11.prot.genomic.seq.fasta -db chr.all.v2.0.fasta -out arap11.prot-gene.blastn.out -evalue 1e-5 &
 	perl ../../../scripts/assembly.eval.arap11.single.pl ./arap11.prot-gene.blastn.out ../../../../tair10/Araport11/Araport11.prot.genomic.seq.fasta ./araport11.gene.blastn.assembly.out &
 
-#### 2) prot seq. blastp and gene family clustering
+##### 2) prot seq. blastp and gene family clustering
 	cd /AMPRIL/genefamily/blastpAraport11/Cvi
 	
 	mkdir prot orthomcl; awk '{if (/>/) print $1;else print}' ../../../annotation/Cvi/version/Cvi.1.0.protein.fasta  |sed 's/>/>Cvi|/g' > prot/Sha.fasta
@@ -97,7 +99,7 @@ All scripts can be run directly.
 	orthomclLoadBlast ./orthomcl.config similarSequences.txt ; orthomclPairs ./orthomcl.config orthomcl_pairs.log cleanup=all  ; orthomclPairs ./orthomcl.config orthomcl_pairs.log cleanup=no; orthomclDumpPairsFiles ./orthomcl.config ;  mcl mclInput --abc -I 1.5 -o mclOutput -te 20; orthomclMclToGroups group 1 < mclOutput > groups.txt &
 
 
-#### 3) prepare files
+##### 3) prepare files
 	cd /AMPRILdenovo/annotation/Cvi/evaluation/misannotation
 	ln -s ../../../../tair10/Araport11/Araport11_gene.bed Araport11.protein.bed
 	ln -s ../../../../genefamily/blastpAraport11/Col.fasta Araport11.protein.fasta
@@ -112,7 +114,7 @@ All scripts can be run directly.
 	awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../../../../assembly/ShaNew/evaluation/Araport11blastn/araport11.gene.besthit.out >Araport11.gene.blastn.besthit.out
 	awk '{print $2"\t"$7"\t"$8"\t"$1"\t"$9"\t"$10}' ../blastnCol/gene.blastn.besthit.out >query.gene.blastn.besthit.out
 
-#### 4) find mis-merging, mis-spliting, missing, mis-annotated genes 
+##### 4) find mis-merging, mis-spliting, missing, mis-annotated genes 
 	input files: 
 		Araport11 and accession protein region bed files and sequences files.
 		  grep gene  ../../repeat/TErelated/annotation.genes.gff|cut -f 1,4,5,9 |sed 's/TU/model/g' >query.prot.gene.bed   
@@ -150,12 +152,12 @@ All scripts can be run directly.
 		
 		nohup python -u ../../../scripts/annotation.evaluate.find-mis.py -g ./groups.txt -o ./run2 -n  Col.prot.besthit.out2 -c query.prot.besthit.out2 -p blastp.result -s Col.prot.gene.bed -q query.prot.gene.bed -x Col.prot.fasta -y query.prot.fasta -a Col.gene.LoF.txt -b query.gene.LoF.txt -r ../../RNAseq/hisat2/rnaseq.4evm.gff >np.run2&
 
-### step 6: update    
-#### 1) run scipio to align the protein sequences from Araport11 annoation
+#### step 6: update    
+##### 1) run scipio to align the protein sequences from Araport11 annoation
 	python ../../../scripts/run.scipio.py -i ../../../data/protein/Araport11-split -o ./  -r ./reference/chr.all.v2.0.fasta >run.log &
   
 
-#### prepare the files
+##### prepare the files
 	ln -s ../misannotation/Cvi.genes.to.be.updated.added.srt.txt ./
 	grep chr Cvi.genes.to.be.updated.added.srt.txt >genes.to.be.updated.txt
 	grep -v chr Cvi.genes.to.be.updated.added.srt.txt >>genes.to.be.updated.txt 
@@ -173,7 +175,7 @@ All scripts can be run directly.
 	ln -s  ../../scipio/run2/splitOut/scipio.gff ./ 
 	ln -s ../../../../wga/results/Cvi/Cvi.wga.snp.indel.gene.LOF.txt ./wga.snp.indel.gene.LoF.txt
 
-#### 2) update
+##### 2) update
 	input files:
 		gene.to.be.updated.txt
 		xx.protein-coding.genes.v1.0.gff
@@ -206,7 +208,7 @@ All scripts can be run directly.
 	python ../../scripts/annotation.gene.ID.update.py -i update2/updated.highConf.gff -n ../version/Cvi.genes.annotation.v2.0.gff -o ../version -v v2.5 -a Cvi -g ../reference/chr.all.v2.0.fasta &
 
  
-# Workflow for pan-genome analysis
+## Workflow for pan-genome analysis
 	pangenome can be built based on the whole genome sequence alignment or protein-coding genes ortholog clustering
 	
 	## Pan-genome: genome sequence alignment
@@ -223,7 +225,7 @@ All scripts can be run directly.
 		python pangenome.build.py -g AMPRIL.Alyrata.ortholog.groups.csv -o ./
 
 
-# Workflow for Structural variations calling for each assembled genome.
+## Workflow for Structural variations calling for each assembled genome.
 	All assemblies were aligned to the reference sequence (TAIR10) using nucmer from the MUMmer4 toolbox with parameter setting “-max -l 40 -g 90 -b 100 -c 200”. The resulting alignments were further filtered for alignment length (>100) and identity (>90). Structural rearrangements and local variations were identified using SyRI (https://github.com/schneebergerlab/syri).
 
 	For details of the file format, please check https://schneebergerlab.github.io/syri/fileformat.html
@@ -234,7 +236,7 @@ All scripts can be run directly.
   	  show-coords -THrd out_m_i90_l100.delta > out_m_i90_l100.coords
       syri -c out.chrom.coords -d out_m_i90_l100.delta -r Col.fasta -q An-1.fasta --nc 5 --all -k
 
-# Workflow for the analysis of synteny diversity
+## Workflow for the analysis of synteny diversity
 	## step 1:
 	Before caculate synteny diversity, please run all pairwise whole genome comparison using MUMmer and run SyRi to identify the syntenic and rearranged regions for each comparison.
 	Let's assume all the alignments in a folder like below:
