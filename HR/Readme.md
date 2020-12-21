@@ -19,43 +19,31 @@ and run SyRi to identify the syntenic and rearranged regions for each comparison
 
 Let's assume all the alignments of between our 8 A.thaliana genomes in a folder like below
 
-/xxx/pairwiseWGA
-
-/xxx/pairwiseWGA/An-1
-
-/xxx/pairwiseWGA/An-1/C24
-
-/xxx/pairwiseWGA/An-1/Cvi
-
-...
-
-/xxx/pairwiseWGA/An-1/Sha
-
-...
-
-...
-
-...
-
-/xxx/pairwiseWGA/Sha
-
-/xxx/pairwiseWGA/Sha/An-1
-
-/xxx/pairwiseWGA/Sha/C24
-
-...
+    /xxx/pairwiseWGA
+    /xxx/pairwiseWGA/An-1
+    /xxx/pairwiseWGA/An-1/C24
+    /xxx/pairwiseWGA/An-1/Cvi
+    ...
+    /xxx/pairwiseWGA/An-1/Sha
+    ...
+    ...
+    ...
+    /xxx/pairwiseWGA/Sha
+    /xxx/pairwiseWGA/Sha/An-1
+    /xxx/pairwiseWGA/Sha/C24
+    ...
 
 ## step 2:  get the coordinates of syntenic regions in all genomes
     bedtools multiinter -i /xxx/pairwiseWGA/Col/*/*.wga.syn.block.txt  -names An-1 C24 Cvi Eri Kyo Ler Sha >Col.syn.txt
+    awk '{if ($4==7) print}' Col.syn.txt >Col.syn.all.txt  ##change the "7" according to the number of your genomes
+
+  Note: file format for seven *.wga.syn.block.txt files at below. Tab seprated 
   
-  Note: file format for seven *.wga.syn.block.txt files at below. Tab seprated ,
- 
     Chr1    1926    23160   Chr1    2148    23388   +   AB  SYN
     Chr1    23138   44997   Chr1    23454   45322   +   AB  SYN
     Chr1    45229   68996   Chr1    45320   69077   +   AB  SYN
 
-
-  The latest version of SyRI does not generate outputs like the above, while it can be easily generated from the SyRI output. e.g: grep SYNAL syri.out|cut -f 1-3,6-8,10  The 7th and 8th columns are not necessary. 
+  The latest version of SyRI does not generate outputs like the above, while it can be easily generated from the SyRI output. e.g: grep SYNAL syri.out|cut -f 1-3,6-8,10  The 7th ("+") and 8th ("AB") columns are not necessary. 
   
     for k in {An-1,C24,Cvi,Eri,Kyo,Ler,Sha}; do  
         for j in {1..5}; do show-aligns -r /xxx/pairwiseWGA/Col/$k/out_m_i90_l100.delta Chr$j Chr$j >/xxx/pairwiseWGA/Col/$k/out_m_i90_l100.chr$j.aligns ; done ;
@@ -63,7 +51,6 @@ Let's assume all the alignments of between our 8 A.thaliana genomes in a folder 
   
     for k in {An-1,C24,Cvi,Eri,Kyo,Ler,Sha};  do cat $k/out_m_i90_l100.chr*.aligns >$k/$k.aligns ;done &
   
-    awk '{if ($4==7) print}' Col.syn.txt >Col.syn.all.txt  ##change the "7" according to the number of your genomes
   
     perl get.all.syn.coord.pl ./Col.syn.all.txt ../../results/pairwiseAssV2/Col/ ./Col.syn.all.coords.txt &  ##maybe, please modify the line 86 and 98 accordingly if you have different number of genomes
   
