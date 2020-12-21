@@ -71,27 +71,30 @@ Let's assume all the alignments of between our 8 A.thaliana genomes in a folder 
     
     perl calculate.syn.diversity.pl ./Col.syn.all.coords.txt2 /xxx/pairwiseAssV2/ chrBed_v2 ./syn.diversity.position.Col.txt 
   
-  Note: the folder chrBed_v2 contains xx.leng.txt (format: chromosome\tlength\n) files for each genome e.g: $cat chrBed_v2/An-1.leng.txt
-
+  Note: the folder chrBed_v2 contains xx.leng.txt (format: chromosome\tlength\n) files for each genome 
+ 
+    e.g: $cat chrBed_v2/An-1.leng.txt
     Chr1	30401407
     Chr2	19417579
     Chr3	23034411
     Chr4	18785460
     Chr5	26733864
 
-Alternatively, in order to avoid too much memory occupation, caculate each pairwise per chromosome, then merge and calculate
+Alternatively, in order to avoid too much memory occupation(especially for large genomes), caculate each pairwise per chromosome, then merge and calculate
 
     nohup perl ../../scripts/run.cal.syn.div.pl ./Col.syn.all.coords.txt2 ../../results/pairwiseAssV2/ ../../chrBed_v2/ ../../scripts/calculate.syn.diversity.pairwise.chr.pl ./splitChr/ > np.chr4 &
     nohup perl ../../scripts/syn.div.merge.pl ./splitChr/ Chr2 ../../chrBed_v2/Col.leng.txt ./splitChr/Chr2.syn.div.pos.txt > np.merge2
+    
+For large genomes, to speed up the calculation, it might be more efficient to load the coordinates of alignment blocks not each nucleotide.
 
 ## step 4: caculate synteny diversity in a sliding window
 
-    for k in {1..5}; do   perl calculate.syn.diversity.window.pl ./splitChr/Chr$k.syn.div.pos.txt 5000 1000 splitChr/Chr$k.syn.div.win5kb.step1kb.txt & done &
-  cat syn.div.win5kb.step1kb.txt  > 
+    for k in {1..5}; do
+        perl calculate.syn.diversity.window.pl ./splitChr/Chr$k.syn.div.pos.txt 5000 1000 splitChr/Chr$k.syn.div.win5kb.step1kb.txt & 
+    done &
+    cat splitChr/Chr*.syn.div.win5kb.step1kb.txt >syn.div.win5kb.step1kb.txt
   
-  Note: 
-  
-  the result file syn.div.win5kb.step1kb.txt, the last column shows the average syntenty diversity in a window
+  Note: the result file syn.div.win5kb.step1kb.txt, the last column shows the average syntenty diversity in a window
     
       Chr1	1	5000	0	0.220
       Chr1	1001	6000	1	0.090
