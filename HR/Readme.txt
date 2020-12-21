@@ -1,3 +1,4 @@
+###Please be informed that all scripts here are only for reproducing the results based on our 8 thaliana genomes. You may have to modify the scripts if you would like to apply them to your projects
 
 # synteny diversity
 Synteny diversity was defined as the average fraction of non-syntenic sites found within all pairwise genome comparisons within
