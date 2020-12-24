@@ -37,7 +37,7 @@ Note: 2. prepare the bed formated file "xx.wga.block.txt" from the .coords file,
 Note: 3 prepare the bed formated file "xx.del.bed" and "xx.ins.bed". eg: for comparision between genomes An-1(reference/subject) and C24(query) files in the folder /xxx/pairwiseWGA/An-1/C24
 
 	cut -f 1-3 C24.wga.block.txt |sort -k1,1 -k2,2n -k3,3n >An-1.C24.ref.aln.bed
-	cut -f 4-6 C24.wga.block.txt |awk '{if ($2>$3) print $1"\t"$3"\t"$2 else print }' |sort -k1,1 -k2,2n -k3,3n >An-1.C24.qry.aln.bed
+	cut -f 4-6 C24.wga.block.txt |awk '{if ($2>$3) print $1"\t"$3"\t"$2; else print }' |sort -k1,1 -k2,2n -k3,3n >An-1.C24.qry.aln.bed
 	bedtools complement -i An-1.C24.ref.aln.bed -g An-1.leng.txt 
 	bedtools complement -i An-1.C24.qry.aln.bed -g C24.leng.txt 
   
