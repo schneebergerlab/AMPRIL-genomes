@@ -3,8 +3,8 @@ pangenome can be built based on the whole genome sequence alignment or protein-c
 
 ## Pan-genome based on genome sequence alignment
 
-### step 1: do all pairwise whole genome comparisons using the tool nucmer in the package MUMmer
-	
+### step 1: do all pairwise whole genome comparisons 
+
 Let's assume all the alignments of between our 8 A.thaliana genomes in a folder like below
 
 	/xxx/pairwiseWGA
@@ -21,6 +21,12 @@ Let's assume all the alignments of between our 8 A.thaliana genomes in a folder 
 	/xxx/pairwiseWGA/Sha/C24
 	...
 	/xxx/pairwiseWGA/Sha/Ler
+	
+run WGA with the tool nucmer (MUMmmer4), e.g:
+
+	nucmer --maxmatch -c 200 -b 300 -l 100 -t 20 ref qry
+	delta-filter -m -i 90 -l 100 out.delta > out_m_i90_l100.delta
+	show-coords -THrd out_m_i90_l100.delta > out_m_i90_l100.coords
 
 Note: 1. the alignment ".coords" result file, e.g out_m_i90_l100.coords:
 	
