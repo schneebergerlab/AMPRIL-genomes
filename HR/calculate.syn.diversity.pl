@@ -185,11 +185,11 @@ foreach my $chr (sort keys %coord) {
    	  my $t = $div{$chr}{$pos}[0]+$div{$chr}{$pos}[1];
    	  print "$chr\t$pos\t$t\t$div{$chr}{$pos}[0]\t$div{$chr}{$pos}[1]\n" if ( $t != $comNum );
    	  my $p = sprintf("%.3f", $div{$chr}{$pos}[1] / $t);
-   	  print OUT "$chr\t$pos\t$t\t$p\n";
+   	  print OUT "$chr\t$pos\t$t\t$div{$chr}{$pos}[1]\t$p\n";
    }  
    ($refSt,$refEnd)=($syns[$i][3+$rIx*3+1], $syns[$i][3 + $rIx*3 + 2]);
    foreach my $pos ($refSt..$refEnd) {   	       	     	
-   	  print OUT "$chr\t$pos\t$comNum\t1.000\n";
+   	  print OUT "$chr\t$pos\t$comNum\t$comNum\t1.000\n";
    }       
  }     
  #last; ##TEST
